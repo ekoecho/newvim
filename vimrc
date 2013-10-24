@@ -44,7 +44,6 @@ Bundle "scrooloose/syntastic"
 Bundle "kien/ctrlp.vim"
 Bundle 'klen/python-mode'
 Bundle "davidhalter/jedi-vim"
-Bundle "altercation/vim-colors-solarized"
 Bundle "ervandew/supertab"
 Bundle "benmills/vimux"
 
@@ -107,7 +106,7 @@ set guioptions-=m    " hide menu bar
 set guioptions-=r    " hide menu bar
 set t_Co=256
 set background=dark
-colorscheme solarized
+colorscheme mustang
 
 
 " search for a tags file recursively from cwd to /
@@ -284,3 +283,4 @@ function! s:unite_settings()
 endfunction
 
 let g:tmuxify_run = { 'js':'node %'}
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
