@@ -46,6 +46,8 @@ Bundle 'klen/python-mode'
 Bundle "davidhalter/jedi-vim"
 Bundle "ervandew/supertab"
 Bundle "benmills/vimux"
+Bundle "davidoc/taskpaper.vim"
+Bundle "kien/rainbow_parentheses.vim"
 
 let mapleader=','
 
@@ -148,7 +150,6 @@ nmap <leader>/ :call NERDComment(0, "toggle")<CR>
 vmap <leader>/ <ESC>:call NERDComment(1, "toggle")<CR>
 " but maybe <leader>C is nicer to type?
 nmap <leader>C  :call NERDComment(0, "toggle")<CR>
-vmap <leader>C <ESC>:call NERDComment(1, "toggle")<CR>
 
 " add a space between the comment delimiter and text
 let NERDSpaceDelims=1
@@ -162,24 +163,6 @@ au BufWinEnter * if &buftype == 'quickfix' | setl wrap | endif
 
 " Press F4 to toggle highlighting on/off, and show current value.
 :noremap <F4> :set hlsearch! hlsearch?<CR>
-
-" ------   rSpec stuff
-
-" Run rspec using a formatter meant for quickfix display
-" Uses ~/.vim/ruby/vim_spec_formatter.rb to populate the quickfix window
-" Slightly modified from https://wincent.com/blog/running-rspec-specs-from-inside-vim
-function! RunSpec(command)
-  if a:command == ''
-    let dir = 'spec'
-  else
-    let dir = a:command
-  endif
-  cexpr system("spec -r ~/.vim/ruby/vim_spec_formatter.rb -f Spec::Runner::Formatter::VimSpecFormatter " . dir)"a:command)
-  cw
-endfunction
-
-" have :Spec run rspecs (args with pathname completion, :Spec spec/views)
-command! -nargs=? -complete=file Spec call RunSpec(<q-args>)
 
 " tell surround not to break the visual s keystroke (:help vs)
 xmap S <Plug>Vsurround
@@ -217,7 +200,6 @@ let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
 let g:pymode_rope = 0
-let g:pymode_folding = 1
 
 " ------- replace vim's grep with ack
 " Disabled by default because it's too different from stock vim behavior.
@@ -233,8 +215,6 @@ set grepprg=ack-grep
 " Downside: you won't be notified if you start editing the same file as someone else.
 set directory=~/.vim/swap,~/tmp,/var/tmp/,tmp
 au BufNewFile,BufRead *.scss set filetype=css
-let vimclojure#WantNailgun = 1
-let vimclojure#NailgunClient = "ng"
 
 
 let g:notes_directory = '~/Dropbox/Notes'
@@ -282,5 +262,29 @@ function! s:unite_settings()
   nmap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 
+nnoremap <space>/ :Unite grep:.<cr>
+
 let g:tmuxify_run = { 'js':'node %'}
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+
+" Prompt for a command to run
+map rp :VimuxPromptCommand<CR>
+
+" Run last command executed by RunVimTmuxCommand
+map rl :VimuxRunLastCommand<CR>
+
+" Inspect runner pane
+map ri :VimuxInspectRunner<CR>
+
+" Close all other tmux panes in current window
+map rx :VimuxCloseRunner<CR>
+
+" Interrupt any command running in the runner pane
+map rs :VimuxInterruptRunner<CR>
+
+let g:pymode_folding = 0
+let g:pymode_lint_write = 0
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'"
