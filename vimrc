@@ -33,7 +33,6 @@ Bundle 'tpope/vim-surround'
 Bundle 'majutsushi/tagbar'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'digitaltoad/vim-jade'
-Bundle 'mattn/zencoding-vim'
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 Bundle 'garbas/vim-snipmate'
@@ -48,6 +47,10 @@ Bundle "ervandew/supertab"
 Bundle "benmills/vimux"
 Bundle "davidoc/taskpaper.vim"
 Bundle "kien/rainbow_parentheses.vim"
+Bundle "Blackrush/vim-gocode"
+Bundle "fatih/vim-go"
+Bundle 'chase/vim-ansible-yaml'
+Bundle "mattn/emmet-vim"
 
 let mapleader=','
 
@@ -288,3 +291,5 @@ let g:pymode_lint_write = 0
 " Documentation
 let g:pymode_doc = 1
 let g:pymode_doc_key = 'K'"
+
+set omnifunc=syntaxcomplete#Complete
