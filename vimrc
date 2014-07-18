@@ -15,6 +15,8 @@ set showmode      " show current mode down the bottom
 set incsearch     " find the next match as we type the search
 set hlsearch      " hilight searches by default
 set nowrap        " by default, dont wrap lines (see <leader>w)
+set rnu
+set number
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -109,6 +111,7 @@ set t_vb=           " and don't flash the screen either (terminal anyway...
 set guioptions-=T      " hide toolbar
 set guioptions-=m    " hide menu bar
 set guioptions-=r    " hide menu bar
+set t_ut=
 set t_Co=256
 set background=dark
 colorscheme mustang
