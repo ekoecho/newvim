@@ -26,6 +26,7 @@ Bundle 'gmarik/vundle'
 Bundle 'Shougo/vimproc'
 " After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
 Bundle 'Shougo/unite.vim'
+" Bundle 'Shougo/neocomplete.vim'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdcommenter'
@@ -53,6 +54,10 @@ Bundle "Blackrush/vim-gocode"
 Bundle "fatih/vim-go"
 Bundle 'chase/vim-ansible-yaml'
 Bundle "mattn/emmet-vim"
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'wakatime/vim-wakatime'
+Bundle 'vimwiki/vimwiki'
+Bundle 'ajh17/Spacegray.vim'
 
 let mapleader=','
 
@@ -296,3 +301,4 @@ let g:pymode_doc = 1
 let g:pymode_doc_key = 'K'"
 
 set omnifunc=syntaxcomplete#Complete
+au BufWritePost *.go silent! !ctags -R &
