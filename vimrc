@@ -4,7 +4,7 @@
 
 " Let Pathogen bring in all the plugins
 filetype off
-call pathogen#runtime_append_all_bundles()
+" call pathogen#runtime_append_all_bundles()
 
 runtime macros/matchit.vim  " enable vim's built-in matchit script (% bounces between tags, begin/end, etc)
 
@@ -18,48 +18,51 @@ set nowrap        " by default, dont wrap lines (see <leader>w)
 set rnu
 set number
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set rtp+=~/.vim/bundle/vundle/
+" call vundle#rc()
+call plug#begin('~/.vim/plugged')
 
-
-Bundle 'gmarik/vundle'
-Bundle 'Shougo/vimproc'
+Plug 'gmarik/vundle'
+Plug 'Shougo/vimproc'
 " After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
-Bundle 'Shougo/unite.vim'
-" Bundle 'Shougo/neocomplete.vim'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-fugitive'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/nerdtree'
-Bundle 'bling/vim-airline'
-Bundle 'tpope/vim-surround'
-Bundle 'majutsushi/tagbar'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'digitaltoad/vim-jade'
-Bundle "MarcWeber/vim-addon-mw-utils"
-Bundle "tomtom/tlib_vim"
-Bundle 'garbas/vim-snipmate'
-Bundle 'honza/vim-snippets'
-Bundle "pangloss/vim-javascript"
-Bundle "Raimondi/delimitMate"
-Bundle "scrooloose/syntastic"
-Bundle "kien/ctrlp.vim"
-Bundle 'klen/python-mode'
-Bundle "davidhalter/jedi-vim"
-Bundle "ervandew/supertab"
-Bundle "benmills/vimux"
-Bundle "davidoc/taskpaper.vim"
-Bundle "kien/rainbow_parentheses.vim"
-Bundle "Blackrush/vim-gocode"
-Bundle "fatih/vim-go"
-Bundle 'chase/vim-ansible-yaml'
-Bundle "mattn/emmet-vim"
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'wakatime/vim-wakatime'
-Bundle 'vimwiki/vimwiki'
-Bundle 'ajh17/Spacegray.vim'
+Plug 'Shougo/unite.vim'
+" Plug 'Shougo/neocomplete.vim'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'bling/vim-airline'
+Plug 'tpope/vim-surround'
+Plug 'majutsushi/tagbar'
+Plug 'tpope/vim-unimpaired'
+Plug 'digitaltoad/vim-jade'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+Plug 'pangloss/vim-javascript'
+Plug 'Raimondi/delimitMate'
+Plug 'scrooloose/syntastic'
+Plug 'kien/ctrlp.vim'
+Plug 'klen/python-mode'
+Plug 'davidhalter/jedi-vim'
+Plug 'ervandew/supertab'
+Plug 'benmills/vimux'
+Plug 'davidoc/taskpaper.vim'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'nsf/gocode', {'rtp': 'vim/'}
+Plug 'fatih/vim-go'
+Plug 'chase/vim-ansible-yaml'
+Plug 'mattn/emmet-vim'
+" Plug 'Valloric/YouCompleteMe'
+Plug 'wakatime/vim-wakatime'
+Plug 'vimwiki/vimwiki'
+Plug 'severin-lemaignan/vim-minimap'
+Plug 'wting/rust.vim'
 
-let mapleader=','
+call plug#end()
+
+let mapleader="\<Space>"
 
 " make Y yank to the end of the line (like C and D).  Use yy to yank the entire line.
 nmap Y y$
@@ -198,6 +201,7 @@ xmap S <Plug>Vsurround
 
 map <leader>w :call ToggleWrap()<CR>
 map <leader>t :TagbarToggle <CR>
+map <leader>gi :GoImports <CR>
 
 " The Align plugin declares a TON of maps, few of which are useful.
 " Remove the ones which conflict with other uses (like \w for wrapping)
@@ -302,3 +306,5 @@ let g:pymode_doc_key = 'K'"
 
 set omnifunc=syntaxcomplete#Complete
 au BufWritePost *.go silent! !ctags -R &
+
+let g:go_fmt_command = "goimports"
