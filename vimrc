@@ -23,10 +23,9 @@ set number
 call plug#begin('~/.vim/plugged')
 
 Plug 'gmarik/vundle'
-Plug 'Shougo/vimproc'
+Plug 'Shougo/vimproc', { 'do': 'make' }
 " After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
 Plug 'Shougo/unite.vim'
-" Plug 'Shougo/neocomplete.vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
@@ -43,18 +42,15 @@ Plug 'honza/vim-snippets'
 Plug 'pangloss/vim-javascript'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/syntastic'
-Plug 'kien/ctrlp.vim'
+"Plug 'kien/ctrlp.vim'
 Plug 'klen/python-mode'
 Plug 'davidhalter/jedi-vim'
 Plug 'ervandew/supertab'
-Plug 'benmills/vimux'
-Plug 'davidoc/taskpaper.vim'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'nsf/gocode', {'rtp': 'vim/'}
 Plug 'fatih/vim-go'
 Plug 'chase/vim-ansible-yaml'
 Plug 'mattn/emmet-vim'
-" Plug 'Valloric/YouCompleteMe'
 Plug 'wakatime/vim-wakatime'
 Plug 'vimwiki/vimwiki'
 Plug 'severin-lemaignan/vim-minimap'
@@ -71,6 +67,7 @@ set shiftwidth=2
 set softtabstop=2
 " ruby code tends to use smaller tabs
 autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2
+autocmd FileType go setlocal ts=4
 " ruby includes ! and ? in method names (array.empty?)
 autocmd FileType ruby setlocal iskeyword+=!,?
 
@@ -89,12 +86,6 @@ set laststatus=2      " always display status line even if only one window is vi
 set updatetime=1000   " reduce updatetime so current tag in taglist is highlighted faster
 set autoread          " suppress warnings when git,etc. changes files on disk.
 
-
-" Remove end of line white space.  TODO: change this to :FixWhitespace?
-map <leader>r ma:%s/\s\+$//e<CR>`a
-
-" Map <C-L> also turns off search highlighting until the next search
-nnoremap <C-L> :nohl<CR><C-L>
 
 filetype indent plugin on
 syntax on
@@ -131,25 +122,7 @@ set tags=.tags,tags;/
 " Add a binding to search for the word under the cursor in all files
 map <leader>* :execute "noautocmd grep -rw " . expand("<cword>") . " ."<CR>
 
-
-" This makes * and # work on visual mode too.
-" http://got-ravings.blogspot.com/2008/07/vim-pr0n-visual-search-mappings.html
-function! s:VSetSearch()
-  let temp = @@
-  norm! gvy
-  let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
-  let @@ = temp
-endfunction
-
-vmap * :<C-u>call <SID>VSetSearch()<CR>//<CR>
-vmap # :<C-u>call <SID>VSetSearch()<CR>??<CR>
-
-
 nmap ¬ :NERDTreeToggle<cr>
-nmap <leader>D :NERDTreeFind<cr>
-nmap <leader>l :TlistToggle<cr>
-
-nmap <C-J> :BufExplorer<CR>
 
 " Use Control-/ to toggle comments
 nmap <C-/> :call NERDComment(0, "toggle")<CR>
@@ -167,10 +140,6 @@ nmap <leader>C  :call NERDComment(0, "toggle")<CR>
 
 " add a space between the comment delimiter and text
 let NERDSpaceDelims=1
-
-" Close buffer but not window.  See close-buffer.vim
-nmap <C-W>e     <Plug>Kwbd
-nmap <C-W><C-E> <Plug>Kwbd
 
 " Make the quickfix window wrap no matter the setting of nowrap
 au BufWinEnter * if &buftype == 'quickfix' | setl wrap | endif
@@ -201,7 +170,6 @@ xmap S <Plug>Vsurround
 
 map <leader>w :call ToggleWrap()<CR>
 map <leader>t :TagbarToggle <CR>
-map <leader>gi :GoImports <CR>
 
 " The Align plugin declares a TON of maps, few of which are useful.
 " Remove the ones which conflict with other uses (like \w for wrapping)
@@ -215,6 +183,7 @@ let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
 let g:pymode_rope = 0
+
 
 " ------- replace vim's grep with ack
 " Disabled by default because it's too different from stock vim behavior.
@@ -279,23 +248,7 @@ endfunction
 
 nnoremap <space>/ :Unite grep:.<cr>
 
-let g:tmuxify_run = { 'js':'node %'}
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-
-" Prompt for a command to run
-map rp :VimuxPromptCommand<CR>
-
-" Run last command executed by RunVimTmuxCommand
-map rl :VimuxRunLastCommand<CR>
-
-" Inspect runner pane
-map ri :VimuxInspectRunner<CR>
-
-" Close all other tmux panes in current window
-map rx :VimuxCloseRunner<CR>
-
-" Interrupt any command running in the runner pane
-map rs :VimuxInterruptRunner<CR>
 
 let g:pymode_folding = 0
 let g:pymode_lint_write = 0
@@ -308,3 +261,11 @@ set omnifunc=syntaxcomplete#Complete
 au BufWritePost *.go silent! !ctags -R &
 
 let g:go_fmt_command = "goimports"
+
+nnoremap <leader>ft :Unite file_rec/async -default-action=tabopen<cr>
+nnoremap <leader>fs :Unite file_rec/async -default-action=split<cr>
+nnoremap <leader>fv :Unite file_rec/async -default-action=vsplit<cr>
+nnoremap <leader>fc :Unite file_rec/async<cr>
+nnoremap <leader>r !./%<cr>
+
+
