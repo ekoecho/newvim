@@ -55,6 +55,7 @@ Plug 'wakatime/vim-wakatime'
 Plug 'vimwiki/vimwiki'
 Plug 'severin-lemaignan/vim-minimap'
 Plug 'wting/rust.vim'
+Plug 'benmills/vimux'
 
 call plug#end()
 
