@@ -277,6 +277,7 @@ endfunction
 
 map <Leader>r :call VimuxRunCommand("./" . bufname("%"))
 map <Leader>gr :call GolangRunAll()<cr>
+map <Leader>gt :call GolangTestCurrentPackage()<cr>
 map <leader>cx :call VimuxInterruptRunner()<cr>
 
 let g:neocomplete#enable_at_startup = 1
