@@ -42,7 +42,6 @@ Plug 'honza/vim-snippets'
 Plug 'pangloss/vim-javascript'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/syntastic'
-"Plug 'kien/ctrlp.vim'
 Plug 'klen/python-mode'
 Plug 'davidhalter/jedi-vim'
 Plug 'ervandew/supertab'
@@ -56,6 +55,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'severin-lemaignan/vim-minimap'
 Plug 'wting/rust.vim'
 Plug 'benmills/vimux'
+Plug 'benmills/vimux-golang'
+Plug 'shougo/neocomplete.vim'
 
 call plug#end()
 
@@ -267,6 +268,15 @@ nnoremap <leader>ft :Unite file_rec/async -default-action=tabopen<cr>
 nnoremap <leader>fs :Unite file_rec/async -default-action=split<cr>
 nnoremap <leader>fv :Unite file_rec/async -default-action=vsplit<cr>
 nnoremap <leader>fc :Unite file_rec/async<cr>
-nnoremap <leader>r !./%<cr>
+"nnoremap <leader>r !./%<cr>
+"
+function! GolangRunAll()
+    call VimuxRunCommand("cd " . GolangCwd() . "; clear; go run *.go" )
+endfunction
 
 
+map <Leader>r :call VimuxRunCommand("./" . bufname("%"))
+map <Leader>gr :call GolangRunAll()<cr>
+map <leader>cx :call VimuxInterruptRunner()<cr>
+
+let g:neocomplete#enable_at_startup = 1
