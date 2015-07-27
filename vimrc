@@ -50,7 +50,6 @@ Plug 'nsf/gocode', {'rtp': 'vim/'}
 Plug 'fatih/vim-go'
 Plug 'chase/vim-ansible-yaml'
 Plug 'mattn/emmet-vim'
-Plug 'wakatime/vim-wakatime'
 Plug 'vimwiki/vimwiki'
 Plug 'severin-lemaignan/vim-minimap'
 Plug 'wting/rust.vim'
