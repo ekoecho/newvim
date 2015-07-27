@@ -274,10 +274,13 @@ function! GolangRunAll()
     call VimuxRunCommand("cd " . GolangCwd() . "; clear; go run *.go" )
 endfunction
 
+function! GolangTestCurrentPackageWithColor()
+    call VimuxRunCommand("cd " . GolangCwd() . "; clear; gotest" )
+endfunction
 
 map <Leader>r :call VimuxRunCommand("./" . bufname("%"))
 map <Leader>gr :call GolangRunAll()<cr>
-map <Leader>gt :call GolangTestCurrentPackage()<cr>
+map <Leader>gt :call GolangTestCurrentPackageWithColor()<cr>
 map <leader>cx :call VimuxInterruptRunner()<cr>
 
 let g:neocomplete#enable_at_startup = 1
