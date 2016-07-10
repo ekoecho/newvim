@@ -48,14 +48,15 @@ Plug 'ervandew/supertab'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'nsf/gocode', {'rtp': 'vim/'}
 Plug 'fatih/vim-go'
-Plug 'chase/vim-ansible-yaml'
-Plug 'mattn/emmet-vim'
 Plug 'vimwiki/vimwiki'
-Plug 'severin-lemaignan/vim-minimap'
-Plug 'wting/rust.vim'
 Plug 'benmills/vimux'
 Plug 'benmills/vimux-golang'
 Plug 'shougo/neocomplete.vim'
+Plug 'mattn/emmet-vim'
+Plug 'racer-rust/vim-racer'
+Plug 'severin-lemaignan/vim-minimap'
+Plug 'rust-lang/rust.vim'
+Plug 'easymotion/vim-easymotion'
 
 call plug#end()
 
@@ -284,3 +285,5 @@ map <Leader>gt :call GolangTestCurrentPackageWithColor()<cr>
 map <leader>cx :call VimuxInterruptRunner()<cr>
 
 let g:neocomplete#enable_at_startup = 1
+let g:racer_cmd = "/home/gclark/.cargo/bin/racer"
+let $RUST_SRC_PATH="/home/gclark/rust/src"
