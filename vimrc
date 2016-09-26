@@ -285,5 +285,8 @@ map <Leader>gt :call GolangTestCurrentPackageWithColor()<cr>
 map <leader>cx :call VimuxInterruptRunner()<cr>
 
 let g:neocomplete#enable_at_startup = 1
-let g:racer_cmd = "/home/gclark/.cargo/bin/racer"
-let $RUST_SRC_PATH="/home/gclark/rust/src"
+let g:racer_cmd = "$HOME/.cargo/bin/racer"
+let $RUST_SRC_PATH="$HOME/rust/src"
+
+
+cmap w!! w !sudo tee % >/dev/null
