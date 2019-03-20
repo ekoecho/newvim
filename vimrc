@@ -54,7 +54,6 @@ Plug 'benmills/vimux-golang'
 Plug 'shougo/neocomplete.vim'
 Plug 'mattn/emmet-vim'
 Plug 'racer-rust/vim-racer'
-Plug 'severin-lemaignan/vim-minimap'
 Plug 'rust-lang/rust.vim'
 Plug 'easymotion/vim-easymotion'
 
