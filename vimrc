@@ -1,4 +1,4 @@
-" ekoecho's .vimrc
+" ekoecho's .vimprc
 "
 " Don't use abbreviations!  Spelling things out makes grepping easy.
 
@@ -17,6 +17,7 @@ set hlsearch      " hilight searches by default
 set nowrap        " by default, dont wrap lines (see <leader>w)
 set rnu
 set number
+
 
 " set rtp+=~/.vim/bundle/vundle/
 " call vundle#rc()
@@ -42,8 +43,6 @@ Plug 'honza/vim-snippets'
 Plug 'pangloss/vim-javascript'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/syntastic'
-Plug 'klen/python-mode'
-Plug 'davidhalter/jedi-vim'
 Plug 'ervandew/supertab'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'nsf/gocode', {'rtp': 'vim/'}
@@ -56,6 +55,27 @@ Plug 'mattn/emmet-vim'
 Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim'
 Plug 'easymotion/vim-easymotion'
+Plug 'junegunn/goyo.vim'
+Plug 'morhetz/gruvbox'
+Plug 'hashivim/vim-terraform'
+Plug 'francoiscabrol/ranger.vim'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#num_processes = 1
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#disable_auto_complete = 1
+
+
+Plug 'davidhalter/jedi'
+Plug 'deoplete-plugins/deoplete-jedi'
+
+
 
 call plug#end()
 
@@ -114,7 +134,7 @@ set guioptions-=r    " hide menu bar
 set t_ut=
 set t_Co=256
 set background=dark
-colorscheme mustang
+colorscheme gruvbox
 
 
 " search for a tags file recursively from cwd to /
@@ -124,6 +144,7 @@ set tags=.tags,tags;/
 map <leader>* :execute "noautocmd grep -rw " . expand("<cword>") . " ."<CR>
 
 nmap ¬ :NERDTreeToggle<cr>
+map <leader>` :NERDTreeToggle<cr>
 
 " Use Control-/ to toggle comments
 nmap <C-/> :call NERDComment(0, "toggle")<CR>
@@ -277,11 +298,49 @@ function! GolangTestCurrentPackageWithColor()
     call VimuxRunCommand("cd " . GolangCwd() . "; clear; gotest" )
 endfunction
 
+
+let g:goyo_active = 0
+function! s:goyo_enter()
+  let g:goyo_active = 1
+  let b:quitting = 0
+  let b:quitting_bang = 0
+  autocmd QuitPre <buffer> let b:quitting = 1
+  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+endfunction
+
+function! s:goyo_leave()
+  let g:goyo_active = 0
+  " Quit Vim if this is the only remaining buffer
+  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    if b:quitting_bang
+      qa!
+    else
+      qa
+    endif
+  endif
+endfunction
+
+"autocmd! User GoyoEnter call <SID>goyo_enter()
+"autocmd! User GoyoLeave call <SID>goyo_leave()
+
+
+function! GoyoToggle()
+  if g:goyo_active == 0
+    :call s:goyo_enter()
+  else
+    :call s:goyo_leave()
+  endif
+endfunction
+
+
 map <Leader>r :call VimuxRunCommand("./" . bufname("%"))
 map <Leader>gr :call GolangRunAll()<cr>
 map <Leader>gg :call GolangRun()<cr>
 map <Leader>gt :call GolangTestCurrentPackageWithColor()<cr>
 map <leader>cx :call VimuxInterruptRunner()<cr>
+
+map <leader>wx :call NoDistractions()<cr>
+
 
 let g:neocomplete#enable_at_startup = 1
 let g:racer_cmd = "$HOME/.cargo/bin/racer"
@@ -289,3 +348,9 @@ let $RUST_SRC_PATH="$HOME/rust/src"
 
 
 cmap w!! w !sudo tee % >/dev/null
+
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
+set completeopt=longest,menu,menuone  
+
+
