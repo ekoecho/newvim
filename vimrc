@@ -13,21 +13,19 @@ set showcmd       " show incomplete cmds down the bottom
 set showmode      " show current mode down the bottom
 
 set incsearch     " find the next match as we type the search
-set hlsearch      " hilight searches by default
 set nowrap        " by default, dont wrap lines (see <leader>w)
 set rnu
 set number
 
+set clipboard=unnamed
 
-" set rtp+=~/.vim/bundle/vundle/
-" call vundle#rc()
+
 call plug#begin('~/.vim/plugged')
 
-Plug 'gmarik/vundle'
-Plug 'Shougo/vimproc', { 'do': 'make' }
-" After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
-Plug 'Shougo/unite.vim'
 Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-salve'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -35,7 +33,6 @@ Plug 'bling/vim-airline'
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-unimpaired'
-Plug 'digitaltoad/vim-jade'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
@@ -43,43 +40,34 @@ Plug 'honza/vim-snippets'
 Plug 'pangloss/vim-javascript'
 Plug 'Raimondi/delimitMate'
 Plug 'scrooloose/syntastic'
-Plug 'ervandew/supertab'
+"Plug 'ervandew/supertab'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'nsf/gocode', {'rtp': 'vim/'}
 Plug 'fatih/vim-go'
 Plug 'vimwiki/vimwiki'
 Plug 'benmills/vimux'
 Plug 'benmills/vimux-golang'
-Plug 'shougo/neocomplete.vim'
-Plug 'mattn/emmet-vim'
-Plug 'racer-rust/vim-racer'
 Plug 'rust-lang/rust.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'morhetz/gruvbox'
 Plug 'hashivim/vim-terraform'
 Plug 'francoiscabrol/ranger.vim'
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-let g:deoplete#num_processes = 1
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#disable_auto_complete = 1
-
-
 Plug 'davidhalter/jedi'
-Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'w0rp/ale'
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'easymotion/vim-easymotion'
+Plug 'Olical/conjure', { 'tag': 'v2.1.0', 'do': 'bin/compile' }
+
 
 
 
 call plug#end()
 
 let mapleader="\<Space>"
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " make Y yank to the end of the line (like C and D).  Use yy to yank the entire line.
 nmap Y y$
@@ -134,6 +122,7 @@ set guioptions-=r    " hide menu bar
 set t_ut=
 set t_Co=256
 set background=dark
+let g:gruvbox_contrast_dark = 'hard'
 colorscheme gruvbox
 
 
@@ -207,14 +196,8 @@ let g:html_indent_style1 = "inc"
 let g:pymode_rope = 0
 
 
-" ------- replace vim's grep with ack
-" Disabled by default because it's too different from stock vim behavior.
-" Embed ack since most distros haven't caught up to the --column option.
 
-set grepprg=ack-grep
-" set grepformat=%f:%l:%c:%m
-
-
+set grepprg=rg
 
 " Store swapfiles in a single directory.
 " Upside: makes mass deleting swapfiles easy, doesn't clutter project dirs
@@ -231,45 +214,6 @@ com W w
 com Wq wq
 com WQ wq
 
-" Unite
-let g:unite_source_history_yank_enable = 1
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" nnoremap <C-p> :Unite file_rec/async<cr>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Unite
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:unite_enable_start_insert = 1
-let g:unite_split_rule = "botright"
-let g:unite_force_overwrite_statusline = 0
-let g:unite_winheight = 10
-
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-      \ 'ignore_pattern', join([
-      \ '\.git/',
-      \ ], '\|'))
-
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-
-nnoremap <C-P> :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
-
-autocmd FileType unite call s:unite_settings()
-
-function! s:unite_settings()
-  let b:SuperTabDisabled=1
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <silent><buffer><expr> <C-x> unite#do_action('split')
-  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-
-  nmap <buffer> <ESC> <Plug>(unite_exit)
-endfunction
-
-nnoremap <space>/ :Unite grep:.<cr>
-
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 
 let g:pymode_folding = 0
@@ -279,29 +223,55 @@ let g:pymode_lint_write = 0
 let g:pymode_doc = 1
 let g:pymode_doc_key = 'K'"
 
-set omnifunc=syntaxcomplete#Complete
+"set omnifunc=syntaxcomplete#Complete
 au BufWritePost *.go silent! !ctags -R &
 
 let g:go_fmt_command = "goimports"
 
-nnoremap <leader>ft :Unite file_rec/async -default-action=tabopen<cr>
-nnoremap <leader>fs :Unite file_rec/async -default-action=split<cr>
-nnoremap <leader>fv :Unite file_rec/async -default-action=vsplit<cr>
-nnoremap <leader>fc :Unite file_rec/async<cr>
-"nnoremap <leader>r !./%<cr>
-"
-function! GolangRunAll()
-    call VimuxRunCommand("cd " . GolangCwd() . "; clear; go run *.go" )
+function! TerragruntPlan()
+    call VimuxRunCommand("clear; terragrunt plan --terragrunt-source ../../../../../../terraform-aws-mongodb" )
 endfunction
 
-function! GolangTestCurrentPackageWithColor()
-    call VimuxRunCommand("cd " . GolangCwd() . "; clear; gotest" )
+function! TerragruntApply()
+    call VimuxRunCommand("clear; terragrunt apply --terragrunt-source ../../../../../../terraform-aws-mongodb" )
 endfunction
 
+map <leader>cx :call VimuxInterruptRunner()<cr>
+map <Leader>y :call TerragruntPlan()<cr>
+map <Leader>Y :call TerragruntApply()<cr>
+map <leader>wx :call NoDistractions()<cr>
 
-let g:goyo_active = 0
+
+cmap w!! w !sudo tee % >/dev/null
+
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
+set completeopt=longest,menu,menuone  
+
+" use <tab> for trigger completion and navigate to next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+nmap <C-p> :Files<cr>
+nmap <Leader>b :Buffers<CR>
+nmap <Leader>h :History<CR>
+nmap <Leader>l :BLines<CR>
+nmap <Leader>L :Lines<CR>
+nmap <Leader>' :Marks<CR>
+
+let g:rustfmt_autosave = 1
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+
 function! s:goyo_enter()
-  let g:goyo_active = 1
   let b:quitting = 0
   let b:quitting_bang = 0
   autocmd QuitPre <buffer> let b:quitting = 1
@@ -309,7 +279,6 @@ function! s:goyo_enter()
 endfunction
 
 function! s:goyo_leave()
-  let g:goyo_active = 0
   " Quit Vim if this is the only remaining buffer
   if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
     if b:quitting_bang
@@ -320,37 +289,11 @@ function! s:goyo_leave()
   endif
 endfunction
 
-"autocmd! User GoyoEnter call <SID>goyo_enter()
-"autocmd! User GoyoLeave call <SID>goyo_leave()
+autocmd! User GoyoEnter call <SID>goyo_enter()
+autocmd! User GoyoLeave call <SID>goyo_leave()
 
-
-function! GoyoToggle()
-  if g:goyo_active == 0
-    :call s:goyo_enter()
-  else
-    :call s:goyo_leave()
-  endif
-endfunction
-
-
-map <Leader>r :call VimuxRunCommand("./" . bufname("%"))
-map <Leader>gr :call GolangRunAll()<cr>
-map <Leader>gg :call GolangRun()<cr>
-map <Leader>gt :call GolangTestCurrentPackageWithColor()<cr>
-map <leader>cx :call VimuxInterruptRunner()<cr>
-
-map <leader>wx :call NoDistractions()<cr>
-
-
-let g:neocomplete#enable_at_startup = 1
-let g:racer_cmd = "$HOME/.cargo/bin/racer"
-let $RUST_SRC_PATH="$HOME/rust/src"
-
-
-cmap w!! w !sudo tee % >/dev/null
-
-let g:terraform_fmt_on_save=1
-let g:terraform_align=1
-set completeopt=longest,menu,menuone  
+set fdm=syntax
+nnoremap <expr> <f2> &foldlevel ? 'zM' :'zR'
+set foldlevelstart=20
 
 
