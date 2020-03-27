@@ -146,20 +146,25 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal nowrap
 setlocal wrapmargin=0
-16
+8
 normal! zo
-21
+12
 normal! zo
-23
+46
 normal! zo
-let s:l = 28 - ((27 * winheight(0) + 36) / 73)
+47
+normal! zo
+48
+normal! zo
+51
+normal! zo
+let s:l = 52 - ((51 * winheight(0) + 35) / 71)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-28
-normal! 033|
-lcd ~/code/aoc/2019/rust/aoc2
+52
+normal! 0
+lcd ~/Exercism/rust/atbash-cipher
 let &so = s:so_save | let &siso = s:siso_save
-nohlsearch
 doautoall SessionLoadPost
 " vim: set ft=vim :

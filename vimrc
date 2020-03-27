@@ -22,6 +22,10 @@ set clipboard=unnamed
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'airblade/vim-rooter'
+Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-startify'
+Plug 'liuchengxu/vista.vim'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fireplace'
@@ -180,12 +184,14 @@ xmap S <Plug>Vsurround
 :endfunction
 
 map <leader>w :call ToggleWrap()<CR>
-map <leader>t :TagbarToggle <CR>
+map <leader>t :Vista!! <CR>
+let g:vista_default_executive = 'coc'
+
 
 " The Align plugin declares a TON of maps, few of which are useful.
 " Remove the ones which conflict with other uses (like \w for wrapping)
-    " unmap <leader>w=
-    " unmap <leader>m=
+" unmap <leader>w=
+" unmap <leader>m=
 " hm, that didn't work.  turn them all off.
 let g:loaded_AlignMapsPlugin = "v41"
 
@@ -229,11 +235,11 @@ au BufWritePost *.go silent! !ctags -R &
 let g:go_fmt_command = "goimports"
 
 function! TerragruntPlan()
-    call VimuxRunCommand("clear; terragrunt plan --terragrunt-source ../../../../../../terraform-aws-mongodb" )
+  call VimuxRunCommand("clear; terragrunt plan --terragrunt-source ../../../../../../terraform-aws-mongodb" )
 endfunction
 
 function! TerragruntApply()
-    call VimuxRunCommand("clear; terragrunt apply --terragrunt-source ../../../../../../terraform-aws-mongodb" )
+  call VimuxRunCommand("clear; terragrunt apply --terragrunt-source ../../../../../../terraform-aws-mongodb" )
 endfunction
 
 map <leader>cx :call VimuxInterruptRunner()<cr>
@@ -297,3 +303,45 @@ nnoremap <expr> <f2> &foldlevel ? 'zM' :'zR'
 set foldlevelstart=20
 
 
+let g:rooter_patterns = ['Rakefile', 'Cargo.toml', '.git/']
+
+
+if has('nvim')
+
+  "Let the input go up and the search list go down
+  let $FZF_DEFAULT_OPTS = '--layout=reverse'
+
+  "Open FZF and choose floating window
+  let g:fzf_layout = { 'window': 'call OpenFloatingWin()' }
+
+
+  function! OpenFloatingWin()
+    let height = &lines - 3
+    let width = float2nr(&columns - (&columns * 2 / 10))
+    let col = float2nr((&columns - width) / 2)
+
+    "Set the position, size, etc. of the floating window.
+    "The size configuration here may not be so flexible, and there's room for further improvement.
+    let opts = {
+          \ 'relative': 'editor',
+          \ 'row': height * 0.3,
+          \ 'col': col + 30,
+          \ 'width': width * 2 / 3,
+          \ 'height': height / 2
+          \ }
+
+    let buf = nvim_create_buf(v:false, v:true)
+    let win = nvim_open_win(buf, v:true, opts)
+
+    "Set Floating Window Highlighting
+    call setwinvar(win, '&winhl', 'Normal:Pmenu')
+
+    setlocal
+          \ buftype=nofile
+          \ nobuflisted
+          \ bufhidden=hide
+          \ nonumber
+          \ norelativenumber
+          \ signcolumn=no
+  endfunction
+endif

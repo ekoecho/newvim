@@ -2,14 +2,26 @@ let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 argglobal
 let s:cpo_save=&cpo
 set cpo&vim
+imap <buffer> <silent> <C-G>g <Plug>delimitMateJumpMany
 imap <buffer> <S-BS> <Plug>delimitMateS-BS
+imap <buffer> <C-H> <Plug>delimitMateBS
 imap <buffer> <BS> <Plug>delimitMateBS
+nmap <buffer>  hp <Plug>(GitGutterPreviewHunk)
+nmap <buffer>  hu <Plug>(GitGutterUndoHunk)
+nmap <buffer>  hs <Plug>(GitGutterStageHunk)
+xmap <buffer>  hs <Plug>(GitGutterStageHunk)
+nmap <buffer> [c <Plug>(GitGutterPrevHunk)
 onoremap <buffer> <silent> [[ :call rust#Jump('o', 'Back')
 xnoremap <buffer> <silent> [[ :call rust#Jump('v', 'Back')
 nnoremap <buffer> <silent> [[ :call rust#Jump('n', 'Back')
+nmap <buffer> ]c <Plug>(GitGutterNextHunk)
 onoremap <buffer> <silent> ]] :call rust#Jump('o', 'Forward')
 xnoremap <buffer> <silent> ]] :call rust#Jump('v', 'Forward')
 nnoremap <buffer> <silent> ]] :call rust#Jump('n', 'Forward')
+xmap <buffer> ac <Plug>(GitGutterTextObjectOuterVisual)
+omap <buffer> ac <Plug>(GitGutterTextObjectOuterPending)
+xmap <buffer> ic <Plug>(GitGutterTextObjectInnerVisual)
+omap <buffer> ic <Plug>(GitGutterTextObjectInnerPending)
 imap <buffer> <silent> g <Plug>delimitMateJumpMany
 imap <buffer>  <Plug>delimitMateBS
 imap <buffer> " <Plug>delimitMate"
@@ -36,11 +48,11 @@ setlocal bufhidden=
 setlocal buflisted
 setlocal buftype=
 setlocal cindent
-setlocal cinkeys=0{,0},!^F,o,O,0[,0]
-setlocal cinoptions=L0,(0,Ws,J1,j1,m1
+setlocal cinkeys=0{,0},!^F,o,O,0[,0],0(,0)
+setlocal cinoptions=L0,(s,Ws,J1,j1,m1
 setlocal cinwords=for,if,else,while,loop,impl,mod,unsafe,trait,struct,enum,fn,extern,macro
 setlocal colorcolumn=
-setlocal comments=s0:/*!,m:\ ,ex:*/,s1:/*,mb:*,ex:*/,:///,://!,://
+setlocal comments=s0:/*!,ex:*/,s1:/*,mb:*,ex:*/,:///,://!,://
 setlocal commentstring=//%s
 setlocal complete=.,w,b,u,t,i
 setlocal concealcursor=
@@ -51,6 +63,7 @@ setlocal cryptmethod=
 setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal nocursorline
+setlocal cursorlineopt=both
 setlocal define=
 setlocal dictionary=
 setlocal nodiff
@@ -65,9 +78,9 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=0
 setlocal foldignore=#
-setlocal foldlevel=0
+setlocal foldlevel=20
 setlocal foldmarker={{{,}}}
-setlocal foldmethod=manual
+setlocal foldmethod=syntax
 setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=foldtext()
@@ -81,7 +94,7 @@ setlocal imsearch=-1
 setlocal include=\\v^\\s*(pub\\s+)?use\\s+\\zs(\\f|:)+
 setlocal includeexpr=rust#IncludeExpr(v:fname)
 setlocal indentexpr=GetRustIndent(v:lnum)
-setlocal indentkeys=0{,0},!^F,o,O,0[,0]
+setlocal indentkeys=0{,0},!^F,o,O,0[,0],0(,0)
 setlocal noinfercase
 setlocal iskeyword=@,48-57,_,192-255
 setlocal keywordprg=
@@ -127,6 +140,7 @@ setlocal syntax=rust
 endif
 setlocal tabstop=8
 setlocal tagcase=
+setlocal tagfunc=
 setlocal tags=
 setlocal termwinkey=
 setlocal termwinscroll=10000
@@ -137,19 +151,26 @@ setlocal noundofile
 setlocal undolevels=-123456
 setlocal varsofttabstop=
 setlocal vartabstop=
+setlocal wincolor=
 setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal nowrap
 setlocal wrapmargin=0
-silent! normal! zE
-let s:l = 18 - ((17 * winheight(0) + 28) / 57)
+14
+normal! zo
+24
+normal! zo
+35
+normal! zo
+36
+normal! zo
+let s:l = 66 - ((65 * winheight(0) + 36) / 73)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-18
+66
 normal! 0
 lcd ~/code/krust
 let &so = s:so_save | let &siso = s:siso_save
-nohlsearch
 doautoall SessionLoadPost
 " vim: set ft=vim :

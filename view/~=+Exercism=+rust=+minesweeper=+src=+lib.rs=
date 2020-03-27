@@ -6,12 +6,22 @@ imap <buffer> <silent> <C-G>g <Plug>delimitMateJumpMany
 imap <buffer> <S-BS> <Plug>delimitMateS-BS
 imap <buffer> <C-H> <Plug>delimitMateBS
 imap <buffer> <BS> <Plug>delimitMateBS
+nmap <buffer>  hp <Plug>(GitGutterPreviewHunk)
+nmap <buffer>  hu <Plug>(GitGutterUndoHunk)
+nmap <buffer>  hs <Plug>(GitGutterStageHunk)
+xmap <buffer>  hs <Plug>(GitGutterStageHunk)
+nmap <buffer> [c <Plug>(GitGutterPrevHunk)
 onoremap <buffer> <silent> [[ :call rust#Jump('o', 'Back')
 xnoremap <buffer> <silent> [[ :call rust#Jump('v', 'Back')
 nnoremap <buffer> <silent> [[ :call rust#Jump('n', 'Back')
+nmap <buffer> ]c <Plug>(GitGutterNextHunk)
 onoremap <buffer> <silent> ]] :call rust#Jump('o', 'Forward')
 xnoremap <buffer> <silent> ]] :call rust#Jump('v', 'Forward')
 nnoremap <buffer> <silent> ]] :call rust#Jump('n', 'Forward')
+xmap <buffer> ac <Plug>(GitGutterTextObjectOuterVisual)
+omap <buffer> ac <Plug>(GitGutterTextObjectOuterPending)
+xmap <buffer> ic <Plug>(GitGutterTextObjectInnerVisual)
+omap <buffer> ic <Plug>(GitGutterTextObjectInnerPending)
 imap <buffer> <silent> g <Plug>delimitMateJumpMany
 imap <buffer>  <Plug>delimitMateBS
 imap <buffer> " <Plug>delimitMate"
@@ -146,19 +156,14 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal nowrap
 setlocal wrapmargin=0
-16
+9
 normal! zo
-21
-normal! zo
-23
-normal! zo
-let s:l = 28 - ((27 * winheight(0) + 36) / 73)
+let s:l = 13 - ((12 * winheight(0) + 36) / 73)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-28
-normal! 033|
-lcd ~/code/aoc/2019/rust/aoc2
+13
+normal! 016|
 let &so = s:so_save | let &siso = s:siso_save
 nohlsearch
 doautoall SessionLoadPost

@@ -146,19 +146,17 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal nowrap
 setlocal wrapmargin=0
-16
+12
 normal! zo
-21
+17
 normal! zo
-23
-normal! zo
-let s:l = 28 - ((27 * winheight(0) + 36) / 73)
+let s:l = 13 - ((12 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-28
-normal! 033|
-lcd ~/code/aoc/2019/rust/aoc2
+13
+normal! 035|
+lcd ~/code/tudu
 let &so = s:so_save | let &siso = s:siso_save
 nohlsearch
 doautoall SessionLoadPost
