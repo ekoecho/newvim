@@ -10,5 +10,6 @@ endfunction
 map <Leader>r :call VimuxRunCommand("./" . bufname("%"))
 map <Leader>gr :call GolangRunAll()<cr>
 map <Leader>gg :call GolangRun()<cr>
+map <Leader>gb :GoBuild()<cr>
 map <Leader>gt :call GolangTestCurrentPackageWithColor()<cr>
 

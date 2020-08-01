@@ -22,7 +22,7 @@ set clipboard=unnamed
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'airblade/vim-rooter'
+"Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-startify'
 Plug 'liuchengxu/vista.vim'
@@ -61,7 +61,9 @@ Plug 'hashivim/vim-terraform'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'davidhalter/jedi'
 Plug 'w0rp/ale'
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+"Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+"Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'easymotion/vim-easymotion'
 Plug 'Olical/conjure', { 'tag': 'v2.1.0', 'do': 'bin/compile' }
 
