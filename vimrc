@@ -1,10 +1,7 @@
 " ekoecho's .vimprc
-"
-" Don't use abbreviations!  Spelling things out makes grepping easy.
 
 " Let Pathogen bring in all the plugins
 filetype off
-" call pathogen#runtime_append_all_bundles()
 
 runtime macros/matchit.vim  " enable vim's built-in matchit script (% bounces between tags, begin/end, etc)
 
@@ -16,76 +13,15 @@ set incsearch     " find the next match as we type the search
 set nowrap        " by default, dont wrap lines (see <leader>w)
 set rnu
 set number
+set undofile
+set undodir=~/.vim/undodir
+set termguicolors     " enable true colors support
 
-set clipboard=unnamed
-
-
-call plug#begin('~/.vim/plugged')
-
-"Plug 'airblade/vim-rooter'
-Plug 'airblade/vim-gitgutter'
-Plug 'mhinz/vim-startify'
-Plug 'liuchengxu/vista.vim'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-salve'
-Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'bling/vim-airline'
-Plug 'tpope/vim-surround'
-Plug 'majutsushi/tagbar'
-Plug 'tpope/vim-unimpaired'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
-Plug 'honza/vim-snippets'
-Plug 'pangloss/vim-javascript'
-Plug 'Raimondi/delimitMate'
-Plug 'scrooloose/syntastic'
-"Plug 'ervandew/supertab'
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'nsf/gocode', {'rtp': 'vim/'}
-Plug 'fatih/vim-go'
-Plug 'vimwiki/vimwiki'
-Plug 'benmills/vimux'
-Plug 'benmills/vimux-golang'
-Plug 'rust-lang/rust.vim'
-Plug 'easymotion/vim-easymotion'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'morhetz/gruvbox'
-Plug 'hashivim/vim-terraform'
-Plug 'francoiscabrol/ranger.vim'
-Plug 'davidhalter/jedi'
-Plug 'w0rp/ale'
-"Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
-"Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'easymotion/vim-easymotion'
-Plug 'Olical/conjure', { 'tag': 'v2.1.0', 'do': 'bin/compile' }
-
-
-
-
-call plug#end()
 
 let mapleader="\<Space>"
-let g:SuperTabDefaultCompletionType = "<c-n>"
-
-" make Y yank to the end of the line (like C and D).  Use yy to yank the entire line.
-nmap Y y$
 
 set shiftwidth=2
 set softtabstop=2
-" ruby code tends to use smaller tabs
-autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2
-autocmd FileType go setlocal ts=4
-" ruby includes ! and ? in method names (array.empty?)
-autocmd FileType ruby setlocal iskeyword+=!,?
-
 set expandtab         " use spaces instead of tabstops
 set smarttab          " use shiftwidth when hitting tab instead of sts (?)
 set autoindent        " try to put the right amount of space at the beginning of a new line
@@ -102,10 +38,57 @@ set updatetime=1000   " reduce updatetime so current tag in taglist is highlight
 set autoread          " suppress warnings when git,etc. changes files on disk.
 
 
+
+"set clipboard=unnamed
+
+
+call plug#begin('~/.vim/plugged')
+Plug 'glepnir/dashboard-nvim'
+Plug 'glepnir/lspsaga.nvim'
+
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'kabouzeid/nvim-lspinstall'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-symbols.nvim'
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/nvim-cmp'
+
+Plug 'hoob3rt/lualine.nvim'
+" If you want to have icons in your statusline choose one of these
+Plug 'kyazdani42/nvim-web-devicons'
+"Plug 'ryanoasis/vim-devicons'
+
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'Raimondi/delimitMate'
+Plug 'nsf/gocode', {'rtp': 'vim/'}
+"Plug 'fatih/vim-go'
+Plug 'vimwiki/vimwiki'
+Plug 'benmills/vimux'
+Plug 'benmills/vimux-golang'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'morhetz/gruvbox'
+Plug 'hashivim/vim-terraform'
+
+call plug#end()
+
+
 filetype indent plugin on
 syntax on
 
-set wildmode=list:longest   "make cmdline tab completion similar to bash
+set wildmode=longest:full,full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 
@@ -119,6 +102,10 @@ set hidden " no need to save before hiding, http://items.sjbach.com/319/configur
 nnoremap ' `
 nnoremap ` '
 
+nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+
+noremap <C-6> <C-^>
+
 set visualbell      " don't beep constantly, it's annoying.
 set t_vb=           " and don't flash the screen either (terminal anyway...
 
@@ -126,7 +113,7 @@ set guioptions-=T      " hide toolbar
 set guioptions-=m    " hide menu bar
 set guioptions-=r    " hide menu bar
 set t_ut=
-set t_Co=256
+"set t_Co=256
 set background=dark
 let g:gruvbox_contrast_dark = 'hard'
 colorscheme gruvbox
@@ -186,9 +173,6 @@ xmap S <Plug>Vsurround
 :endfunction
 
 map <leader>w :call ToggleWrap()<CR>
-map <leader>t :Vista!! <CR>
-let g:vista_default_executive = 'coc'
-
 
 " The Align plugin declares a TON of maps, few of which are useful.
 " Remove the ones which conflict with other uses (like \w for wrapping)
@@ -201,10 +185,6 @@ let g:html_indent_inctags = "html,body,head,tbody"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 
-let g:pymode_rope = 0
-
-
-
 set grepprg=rg
 
 " Store swapfiles in a single directory.
@@ -214,41 +194,16 @@ set directory=~/.vim/swap,~/tmp,/var/tmp/,tmp
 au BufNewFile,BufRead *.scss set filetype=css
 
 
-let g:notes_directory = '~/Dropbox/Notes'
-
 " I'm getting tired of accidentally holding down the shift key...
 " Reissue `w` even if I capitalize it...
 com W w
 com Wq wq
 com WQ wq
 
-let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-
-let g:pymode_folding = 0
-let g:pymode_lint_write = 0
-
-" Documentation
-let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'"
-
 "set omnifunc=syntaxcomplete#Complete
 au BufWritePost *.go silent! !ctags -R &
 
 let g:go_fmt_command = "goimports"
-
-function! TerragruntPlan()
-  call VimuxRunCommand("clear; terragrunt plan --terragrunt-source ../../../../../../terraform-aws-mongodb" )
-endfunction
-
-function! TerragruntApply()
-  call VimuxRunCommand("clear; terragrunt apply --terragrunt-source ../../../../../../terraform-aws-mongodb" )
-endfunction
-
-map <leader>cx :call VimuxInterruptRunner()<cr>
-map <Leader>y :call TerragruntPlan()<cr>
-map <Leader>Y :call TerragruntApply()<cr>
-map <leader>wx :call NoDistractions()<cr>
-
 
 cmap w!! w !sudo tee % >/dev/null
 
@@ -262,13 +217,9 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
 
-nmap <C-p> :Files<cr>
-nmap <Leader>b :Buffers<CR>
+nmap <C-p> :Telescope find_files<cr>
+nmap <Leader>b :Telescope buffers<CR>
 nmap <Leader>h :History<CR>
 nmap <Leader>l :BLines<CR>
 nmap <Leader>L :Lines<CR>
@@ -279,34 +230,19 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 
-function! s:goyo_enter()
-  let b:quitting = 0
-  let b:quitting_bang = 0
-  autocmd QuitPre <buffer> let b:quitting = 1
-  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
-endfunction
-
-function! s:goyo_leave()
-  " Quit Vim if this is the only remaining buffer
-  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
-    if b:quitting_bang
-      qa!
-    else
-      qa
-    endif
-  endif
-endfunction
-
-autocmd! User GoyoEnter call <SID>goyo_enter()
-autocmd! User GoyoLeave call <SID>goyo_leave()
-
 set fdm=syntax
 nnoremap <expr> <f2> &foldlevel ? 'zM' :'zR'
 set foldlevelstart=20
 
-
-let g:rooter_patterns = ['Rakefile', 'Cargo.toml', '.git/']
-
+let g:dashboard_default_executive = "telescope"
+let g:dashboard_custom_header = [
+\ ' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
+\ ' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
+\ ' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
+\ ' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
+\ ' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
+\ ' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
+\]
 
 if has('nvim')
 
@@ -315,6 +251,8 @@ if has('nvim')
 
   "Open FZF and choose floating window
   let g:fzf_layout = { 'window': 'call OpenFloatingWin()' }
+
+
 
 
   function! OpenFloatingWin()
@@ -347,3 +285,4 @@ if has('nvim')
           \ signcolumn=no
   endfunction
 endif
+
